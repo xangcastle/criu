@@ -323,7 +323,7 @@ int arch_ptrace_restore(int pid, struct pstree_item *item)
 	pacg = &rsti(item)->arch_info.pac_generic_keys;
 	if (rsti(item)->arch_info.has_paca) {
 		if (!(hwcaps & HWCAP_PACA)) {
-			pr_err("PACG support is required from the source system.\n");
+			pr_err("Dumped process has PAC address keys, but PACA is not supported on this host\n");
 			return 1;
 		}
 		pac_enabled_keys = rsti(item)->arch_info.pac_address_keys.pac_enabled_key;
@@ -350,7 +350,7 @@ int arch_ptrace_restore(int pid, struct pstree_item *item)
 
 	if (rsti(item)->arch_info.has_pacg) {
 		if (!(hwcaps & HWCAP_PACG)) {
-			pr_err("PACG support is required from the source system.\n");
+			pr_err("Dumped process has PAC generic keys, but PACG is not supported on this host\n");
 			return 1;
 		}
 		upacg.apgakey = pacg->apgakey_lo + ((__uint128_t)pacg->apgakey_hi << 64);
